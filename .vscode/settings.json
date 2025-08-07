@@ -1,0 +1,23 @@
+{
+  "tailwindCSS.includeLanguages": {
+    "html": "html",
+    "typescript": "typescript"
+  },
+  "tailwindCSS.experimental.classRegex": [
+    ["class\\s*=\\s*['\"`]([^'\"`]*).*?['\"`]", "([a-zA-Z0-9\\-\\s]+)"],
+    ["className\\s*=\\s*['\"`]([^'\"`]*).*?['\"`]", "([a-zA-Z0-9\\-\\s]+)"]
+  ],
+  "tailwindCSS.files.exclude": [
+    "**/.git/**",
+    "**/node_modules/**",
+    "**/.hg/**",
+    "**/.svn/**"
+  ],
+  "css.validate": false,
+  "tailwindCSS.emmetCompletions": true,
+  "editor.fontSize": 16,
+  "editor.minimap.sectionHeaderFontSize": 9,
+  "debug.console.fontSize": 14,
+  "terminal.integrated.fontSize": 14,
+  "tailwindCSS.rootFontSize": 14
+} 
