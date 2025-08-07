@@ -3,6 +3,7 @@ export interface Course {
     code: string;
     name: string;
     credits: number;
+    department: string;
     professor: string;
     description: string;
     enrolledStudents: number;

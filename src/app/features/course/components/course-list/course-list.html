@@ -1,14 +1,14 @@
 <div class="container mx-auto p-8 bg-gray-50 min-h-screen rounded-xl shadow-inner">
   <h1 class="text-5xl font-extrabold text-center text-blue-800 mb-12 drop-shadow-lg">Catalogo de Cursos Universitarios
   </h1>
-  <!-- Seccion de filtro -->
+
   <div class="mb-8 flex flex-col sm:flex-row items-center justify-center gap-4 p-6 bg-white rounded-xl shadow-md">
     <input type="text" placeholder="Buscar cursos por nombre o codigo (ej. Programacion, CS101)"
       class="flex-grow p-3 border text-gray-400 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
       [(ngModel)]="filterTerm" (input)="filterCourses()">
     <button class="w-full sm:w-auto bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold">Filtrar Cursos</button>
   </div>
-  <!-- despliegue de informacion -->
+
   @if(loading){
   <div class="flex justify-center items-center h-64">
     <div class="animate-spin rounded-full h-20 w-20 border-b-4 border-blue-500"></div>
