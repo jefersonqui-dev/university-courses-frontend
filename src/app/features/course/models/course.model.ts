@@ -5,5 +5,7 @@ export interface Course {
     credits: number;
     professor: string;
     description: string;
+    enrolledStudents: number;
+    maxStudents: number;
     imageUrl: string;
 }
