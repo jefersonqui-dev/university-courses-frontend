@@ -19,5 +19,5 @@ jobs:
       - name: Add issue to Project
         uses: actions/add-to-project@main
         with:
-          project-url: https://github.com/users/jefersonqui-dev/projects/4
+          project-url: https://github.com/users/jefersonqui-dev/projects/4/views/1
           github-token: ${{ secrets.GITHUB_TOKEN }}
