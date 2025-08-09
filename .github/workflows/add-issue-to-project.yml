@@ -1,4 +1,3 @@
-
 name: 'Add new issue to Project'
 
 on:
@@ -11,7 +10,7 @@ jobs:
     name: Add issue to project
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
       issues: write
       pull-requests: write
       repository-projects: write
