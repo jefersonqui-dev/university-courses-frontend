@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Course } from '../../models/course.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule} from '@angular/forms'
+import { CourseCardSignal } from '../course-card-signal/course-card-signal';
 
 @Component({
   selector: 'app-course-list',
-  imports: [CommonModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, CourseCardSignal],
   templateUrl: './course-list.html',
   styleUrl: './course-list.css'
 })
@@ -26,6 +28,7 @@ export class CourseList implements OnInit {
           code: 'CS101',
           name: 'Programación Estructurada',
           credits: 4,
+          department: 'Ingeniería de Software',
           professor: 'Dr. Rubiel Vargas',
           description: "Fundamentos de programación estructurada utilizando C++. Se abordan conceptos básicos de algoritmos, estructuras de control y funciones.",
           enrolledStudents: 25,
@@ -37,6 +40,7 @@ export class CourseList implements OnInit {
           code: 'EL202',
           name: 'Laboratorio de Dispositivos Pasivos',
           credits: 2,
+          department: 'Ingeniería Electrónica',
           professor: 'Dra. Laura Martínez',
           description: "Prácticas experimentales con resistencias, capacitores e inductores. Análisis de circuitos pasivos y medición de parámetros eléctricos.",
           enrolledStudents: 18,
@@ -48,6 +52,7 @@ export class CourseList implements OnInit {
           code: 'MA203',
           name: 'Ecuaciones Diferenciales',
           credits: 3,
+          department: 'Ingeniería Matemática',
           professor: 'Dr. Juan Pérez',
           description: "Estudio de ecuaciones diferenciales ordinarias y sus aplicaciones en ingeniería. Métodos de solución analítica y numérica.",
           enrolledStudents: 30,
@@ -59,6 +64,7 @@ export class CourseList implements OnInit {
           code: 'EL204',
           name: 'Sistemas Analógicos',
           credits: 4,
+          department: 'Ingeniería Electrónica',
           professor: 'Dra. Ana Gómez',
           description: "Análisis y diseño de sistemas electrónicos analógicos. Amplificadores operacionales, filtros y osciladores.",
           enrolledStudents: 22,
@@ -70,6 +76,7 @@ export class CourseList implements OnInit {
           code: 'EL305',
           name: 'Procesamiento de Señales',
           credits: 3,
+          department: 'Ingeniería Electrónica',
           professor: 'Dr. Carlos Ramírez',
           description: "Introducción al procesamiento digital de señales. Transformada de Fourier, filtrado y aplicaciones en comunicaciones.",
           enrolledStudents: 15,
@@ -81,6 +88,7 @@ export class CourseList implements OnInit {
           code: 'FI210',
           name: 'Termodinámica',
           credits: 4,
+          department: 'Ingeniería Física',
           professor: 'Dra. Patricia Herrera',
           description: "Principios de la termodinámica, leyes y aplicaciones en sistemas físicos y de ingeniería.",
           enrolledStudents: 28,
@@ -92,6 +100,7 @@ export class CourseList implements OnInit {
           code: 'FI211',
           name: 'Vibraciones y Ondas',
           credits: 3,
+          department: 'Ingeniería Física',
           professor: 'Dr. Andrés Torres',
           description: "Estudio de movimientos vibratorios y propagación de ondas mecánicas y electromagnéticas.",
           enrolledStudents: 20,
@@ -103,6 +112,7 @@ export class CourseList implements OnInit {
           code: 'MA310',
           name: 'Modelos Físico-Matemáticos para Ingeniería',
           credits: 4,
+          department: 'Ingeniería Matemática',
           professor: 'Dra. Gabriela Suárez',
           description: "Formulación y análisis de modelos matemáticos aplicados a problemas de ingeniería utilizando herramientas avanzadas.",
           enrolledStudents: 12,
@@ -114,6 +124,7 @@ export class CourseList implements OnInit {
           code: 'FI101',
           name: 'Mecánica',
           credits: 5,
+          department: 'Ingeniería Física',
           professor: 'Dr. Enrique López',
           description: "Cinemática y dinámica de partículas y cuerpos rígidos. Leyes de Newton y conservación de la energía.",
           enrolledStudents: 32,
@@ -125,6 +136,7 @@ export class CourseList implements OnInit {
           code: 'FI220',
           name: 'Electromagnetismo',
           credits: 4,
+          department: 'Ingeniería Eléctrica',
           professor: 'Dra. Silvia Mendoza',
           description: "Campos eléctricos y magnéticos, leyes de Maxwell y aplicaciones en dispositivos eléctricos.",
           enrolledStudents: 27,
@@ -136,6 +148,7 @@ export class CourseList implements OnInit {
       this.loading = false;
     },1000);
   }
+  
   filterCourses(): void{
     if(!this.filterTerm){
       this.courses = this.allCourse;
@@ -143,9 +156,19 @@ export class CourseList implements OnInit {
       this.courses = this.allCourse.filter(course =>
         course.name.toLowerCase().includes(this.filterTerm.toLowerCase()) ||
         course.code.toLowerCase().includes(this.filterTerm.toLowerCase())
-        
-
-        );  
+      );  
     }
+  }
+
+  onEnrollCourse(courseId: number): void {
+    console.log('Inscripción solicitada para el curso ID:', courseId);
+    // Aquí puedes implementar la lógica de inscripción
+    // Por ejemplo, actualizar el estado del curso o hacer una llamada al servicio
+  }
+
+  onViewDetails(courseId: number): void {
+    console.log('Ver detalles del curso ID:', courseId);
+    // Aquí puedes implementar la navegación a la página de detalles
+    // Por ejemplo, navegar a una ruta de detalles
   }
 }
