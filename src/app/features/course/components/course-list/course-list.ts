@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Course } from '../../models/course.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule} from '@angular/forms'
+import { CourseCardSignal } from '../course-card-signal/course-card-signal';
 
 @Component({
   selector: 'app-course-list',
-  imports: [CommonModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, CourseCardSignal],
   templateUrl: './course-list.html',
   styleUrl: './course-list.css'
 })
@@ -146,6 +148,7 @@ export class CourseList implements OnInit {
       this.loading = false;
     },1000);
   }
+  
   filterCourses(): void{
     if(!this.filterTerm){
       this.courses = this.allCourse;
@@ -153,9 +156,19 @@ export class CourseList implements OnInit {
       this.courses = this.allCourse.filter(course =>
         course.name.toLowerCase().includes(this.filterTerm.toLowerCase()) ||
         course.code.toLowerCase().includes(this.filterTerm.toLowerCase())
-        
-
-        );  
+      );  
     }
+  }
+
+  onEnrollCourse(courseId: number): void {
+    console.log('Inscripción solicitada para el curso ID:', courseId);
+    // Aquí puedes implementar la lógica de inscripción
+    // Por ejemplo, actualizar el estado del curso o hacer una llamada al servicio
+  }
+
+  onViewDetails(courseId: number): void {
+    console.log('Ver detalles del curso ID:', courseId);
+    // Aquí puedes implementar la navegación a la página de detalles
+    // Por ejemplo, navegar a una ruta de detalles
   }
 }
