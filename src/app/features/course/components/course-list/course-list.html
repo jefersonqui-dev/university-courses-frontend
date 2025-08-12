@@ -5,29 +5,38 @@
   <div class="mb-8 flex flex-col sm:flex-row items-center justify-center gap-4 p-6 bg-white rounded-xl shadow-md">
     <input type="text" placeholder="Buscar cursos por nombre o codigo (ej. Programacion, CS101)"
       class="flex-grow p-3 border text-gray-400 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg"
-      [(ngModel)]="filterTerm" (input)="filterCourses()">
-    <button class="w-full sm:w-auto bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold">Filtrar Cursos</button>
+      [(ngModel)]="filterDepartament" (input)="onFilterInputChange($event)">
+    <button class="w-full sm:w-auto bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold"
+      (click)="filterDepartament.set('')">Filtrar Cursos</button>
   </div>
 
-  @if(loading){
+  @if(loading()){
   <div class="flex justify-center items-center h-64">
     <div class="animate-spin rounded-full h-20 w-20 border-b-4 border-blue-500"></div>
     <p class="ml-4 text-2xl text-blue-600">Cargando Cursos...</p>
   </div>
-  }@else if(courses.length === 0 && !loading){
+  }@else if(error()){
+  <div class="text-center p-8 text-2xl text-red-100 bg-red-100 border border-yellow-300 rounded-lg shadow-md">
+    <p class="font-bold mb-2">!Error al cargar los cursos</p>
+    <p>{{ error() }}</p>
+  </div>
+  }@else if (filteredCourses().length === 0 && !loading()) {
   <div class="text-center p-8 text-2xl text-gray-500 bg-yellow-50 border border-yellow-300 rounded-lg shadow-md">
-    <p class="font-bold mb-2">No se encontraron cursos que coincidan con tu busqueda.</p>
-    <p>Intenta con otro elemento o reinicia el filtro</p>
+    <p class="font-bold mb-2">No hay cursos disponibles que coincidan con tu busqueda</p>
+    <p>Intenta con otro departamento o reinicia el filtro</p>
   </div>
   }@else {
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-    @for(course of courses; track course.id){
-    <app-course-card-signal [course]="course" (enrollCourse)="onEnrollCourse($event)"
-      (viewDetails)="onViewDetails($event)">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+    @for(course of filteredCourses(); track course.id){
+    <!-- usamos el componente hijo basado en signals -->
+    <app-course-card-signal [course]="course" (enrollCourse)="handleEnrollCourse($event)"
+      (viewDetails)="handleViewDetails($event)">
     </app-course-card-signal>
+
     }@empty {
 
     }
+
   </div>
   }
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, computed, effect } from '@angular/core';
 import { Course } from '../../models/course.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule} from '@angular/forms'
@@ -12,17 +12,38 @@ import { CourseCardSignal } from '../course-card-signal/course-card-signal';
   styleUrl: './course-list.css'
 })
 export class CourseList implements OnInit {
-  courses: Course[] = [];
-  allCourse: Course[] = [];
-  loading: boolean = true;
-  filterTerm: string = '';
-  constructor (){}
+  // Signals para el estado de la aplicación
+  allCourses = signal<Course[]>([]);
+  filterDepartament = signal<string>('');
+  loading = signal<boolean>(true);
+  error = signal<string | null>(null);
+
+  // Signal computada para filtrar cursos por departamento
+  filteredCourses = computed(() => {
+    const currentFilter = this.filterDepartament().toLowerCase();
+    if(!currentFilter){
+      return this.allCourses();
+    }else{
+      return this.allCourses().filter(course =>
+        course.department.toLowerCase().includes(currentFilter));
+      ;
+    }
+  });
+
+  constructor (){
+    // Effect para monitorear cambios en el filtro de departamento
+    effect(() => {
+      console.log(`El filtro de departamento ha cambiado a: "${this.filterDepartament()}"`);
+    });
+  }
 
   ngOnInit(): void{
-    this.loading = true;
-    //simular carga de datos
+    this.loading.set(true);
+    this.error.set(null);
+    
+    // Simular carga de datos con timeout
     setTimeout(() => {
-      this.allCourse = [
+      const simulatedData: Course[] = [
         {
           id: 1,
           code: 'CS101',
@@ -144,31 +165,43 @@ export class CourseList implements OnInit {
           imageUrl: 'https://cdn.goconqr.com/uploads/image_clipping/image/86800/electromagnetismo.jpg'
         }
       ];
-      this.courses = this.allCourse;
-      this.loading = false;
-    },1000);
+      this.allCourses.set(simulatedData);
+      this.loading.set(false);
+    },1500);
   }
   
-  filterCourses(): void{
-    if(!this.filterTerm){
-      this.courses = this.allCourse;
-    }else {
-      this.courses = this.allCourse.filter(course =>
-        course.name.toLowerCase().includes(this.filterTerm.toLowerCase()) ||
-        course.code.toLowerCase().includes(this.filterTerm.toLowerCase())
-      );  
-    }
+  /**
+   * Actualiza la signal 'filterDepartament' desde el input del filtro
+   * @param event - Evento del input HTML
+   */
+  onFilterInputChange(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    this.filterDepartament.set(inputElement.value);
   }
 
-  onEnrollCourse(courseId: number): void {
-    console.log('Inscripción solicitada para el curso ID:', courseId);
-    // Aquí puedes implementar la lógica de inscripción
-    // Por ejemplo, actualizar el estado del curso o hacer una llamada al servicio
+  /**
+   * Maneja el evento 'enrollCourse' emitido por el componente hijo
+   * Solo permite inscribir si hay cupos disponibles
+   * @param courseId - ID del curso a inscribir
+   */
+  handleEnrollCourse(courseId: number): void{
+    this.allCourses.update(currentCourses => 
+      currentCourses.map(course =>
+        course.id === courseId && course.enrolledStudents < course.maxStudents
+        ? {...course, enrolledStudents: course.enrolledStudents + 1  
+        } : course
+      )
+    );
+    console.log(`Inscrito en el curso con ID: ${courseId}`);
   }
 
-  onViewDetails(courseId: number): void {
-    console.log('Ver detalles del curso ID:', courseId);
-    // Aquí puedes implementar la navegación a la página de detalles
-    // Por ejemplo, navegar a una ruta de detalles
+  /**
+   * Maneja el evento 'viewDetails' emitido por el componente hijo
+   * @param courseId - ID del curso para ver detalles
+   */
+  handleViewDetails(courseId: number): void {
+    console.log(`Ver detalles del curso con ID: ${courseId}`);
+    alert(`Has hecho click en 'Ver Detalles' para el curso con ID: ${courseId}`);
   }
+
 }
