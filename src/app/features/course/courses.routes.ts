@@ -5,5 +5,6 @@ export const COURSES_ROUTES: Routes = [
   {
     path: '',
     component: CourseList
-  }
+  },
+
 ];
